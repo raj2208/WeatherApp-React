@@ -1,9 +1,9 @@
-import React, { useState, useEffect, Component } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import axios from "axios"; //handles HTTP requests to the OpenWeatherMap API.
 import apiKeys from "./apiKeys";
 import ReactAnimatedWeather from "react-animated-weather";
 
-function Forcast(props) {
+function Forecast(props) {
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
   const [weather, setWeather] = useState({});
@@ -12,7 +12,7 @@ function Forcast(props) {
     axios
       .get(
         `${apiKeys.base}weather?q=${
-          city != "[object Object]" ? city : query
+          city !== "[object Object]" ? city : query
         }&units=metric&APPID=${apiKeys.key}`
       )
       .then((response) => {
@@ -26,22 +26,10 @@ function Forcast(props) {
         setError({ message: "Not Found", query: query });
       });
   };
-  function checkTime(i) {
-    if (i < 10) {
-      i = "0" + i;
-    } // add zero in front of numbers < 10
-    return i;
-  }
 
-  const defaults = {
-    color: "white",
-    size: 112,
-    animate: true,
-  };
-
-  useEffect(() => {
-    search("Delhi");
-  }, []);
+  // useEffect(() => {
+  //   search("Delhi");
+  // }, [search]);
 
   return (
     <div className="forecast">
@@ -66,13 +54,15 @@ function Forcast(props) {
           <div className="img-box">
             {" "}
             <img
+              //magnifying glass icon
               src="https://images.avishkaar.cc/workflow/newhp/search-white.png"
-              onClick={search}
+              onClick={() => search(query)}
+              alt="Search"
             />
           </div>
         </div>
         <ul>
-          {typeof weather.main != "undefined" ? (
+          {typeof weather.main !== "undefined" ? (
             <div>
               {" "}
               <li className="cityHead">
@@ -82,6 +72,7 @@ function Forcast(props) {
                 <img
                   className="temp"
                   src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
+                  alt="Weather Icon"
                 />
               </li>
               <li>
@@ -119,4 +110,11 @@ function Forcast(props) {
     </div>
   );
 }
-export default Forcast;
+
+const defaults = {
+  color: "white",
+  size: 112,
+  animate: true,
+};
+
+export default Forecast;

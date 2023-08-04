@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import CurrentLocation from "./currentLocation";
 import "./App.css";
 
@@ -9,19 +9,20 @@ function App() {
         <CurrentLocation />
       </div>
       <div className="footer-info">
-        <a href="https://www.htmlhints.com/article/how-to-create-toggle-switch/93">
+        <a href="https://github.com/raj2208" rel="noreferrer">
           Download Source Code
         </a>{" "}
         | Developed by{" "}
-        <a target="_blank" href="https://github.com/raj2208">
+        <a target="_blank" href="https://github.com/raj2208" rel="noreferrer">
           Raj Kumar Rai
         </a>{" "}
         | Here's My{" "}
-        <a target="_blank" href="#">
+        <a target="_blank" href="https://github.com/raj2208" rel="noreferrer">
           PORTFOLIO
         </a>
       </div>
     </React.Fragment>
+    // <React.Fragment> ... </React.Fragment>: This is a special syntax in React used to group multiple JSX elements without adding an extra DOM element to the output. It's also commonly written as <> ... </>.
   );
 }
 

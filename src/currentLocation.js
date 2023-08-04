@@ -4,6 +4,8 @@ import Clock from "react-live-clock";
 import Forcast from "./forcast";
 import loader from "./images/WeatherIcons.gif";
 import ReactAnimatedWeather from "react-animated-weather";
+
+// The dateBuilder function formats the current date into a readable string.
 const dateBuilder = (d) => {
   let months = [
     "January",
@@ -36,11 +38,17 @@ const dateBuilder = (d) => {
 
   return `${day}, ${date} ${month} ${year}`;
 };
+
+// The defaults object contains default settings for the animated weather icon.
+
 const defaults = {
   color: "white",
   size: 112,
   animate: true,
 };
+
+// This code defines a Weather class component in React. Class components are the older way of creating components in React, and they extend the React.Component class to inherit its functionality.
+
 class Weather extends React.Component {
   state = {
     lat: undefined,
@@ -57,17 +65,17 @@ class Weather extends React.Component {
     sunset: null, // Use null instead of undefined
     errorMsg: undefined,
   };
-
+  // The componentDidMount lifecycle method is called after the component has been rendered. It first tries to get the user's geolocation using the browser's navigator API.
   componentDidMount() {
     if (navigator.geolocation) {
-      this.getPosition()
+      this.getPosition() //promise-based function
         //If user allow location service then will fetch data & send it to get-weather function.
         .then((position) => {
           this.getWeather(position.coords.latitude, position.coords.longitude);
         })
         .catch((err) => {
           //If user denied location service then standard location weather will le shown on basis of latitude & latitude.
-          this.getWeather(28.67, 77.22);
+          this.getWeather(28.67, 77.22); //default lat and lon
           alert(
             "You have disabled location service. Allow 'This APP' to access your location. Your current location will be used for calculating Real time weather."
           );
@@ -75,7 +83,7 @@ class Weather extends React.Component {
     } else {
       alert("Geolocation not available");
     }
-
+    //fetch updated weather data every 10 minutes
     this.timerID = setInterval(
       () => this.getWeather(this.state.lat, this.state.lon),
       600000
@@ -103,10 +111,12 @@ class Weather extends React.Component {
   };
   getWeather = async (lat, lon) => {
     const api_call = await fetch(
+      //constructing the url for api calls
       `${apiKeys.base}weather?lat=${lat}&lon=${lon}&units=metric&APPID=${apiKeys.key}`
     );
+    //wait for the api call
     const data = await api_call.json();
-
+    //It ensures that the main, weather, and weather[0] properties exist in the data object.
     if (data && data.main && data.weather && data.weather[0]) {
       this.setState({
         lat: lat,
@@ -154,6 +164,7 @@ class Weather extends React.Component {
   };
 
   render() {
+    //displays weather info when tempC is available
     if (this.state.temperatureC) {
       return (
         <React.Fragment>
@@ -192,10 +203,16 @@ class Weather extends React.Component {
           <Forcast icon={this.state.icon} weather={this.state.main} />
         </React.Fragment>
       );
-    } else {
+    }
+    //loading msg when tempC is NULL (the front page)
+    else {
       return (
         <React.Fragment>
-          <img src={loader} style={{ width: "50%", WebkitUserDrag: "none" }} />
+          <img
+            alt="here"
+            src={loader}
+            style={{ width: "50%", WebkitUserDrag: "none" }}
+          />
           <h3 style={{ color: "white", fontSize: "22px", fontWeight: "600" }}>
             Detecting your location
           </h3>
